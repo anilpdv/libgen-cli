@@ -1,0 +1,19 @@
+# Binaries & Packaging
+/libgen-cli
+/bin/
+/dist/
+/libgen/test
+/libgen/libgen
+/libgen/libgen.test
+/libgen/mem.prof
+*.exe
+
+# IDE, OS & Scripts
+.idea/
+.vscode/
+.DS_Store
+*.log
+scratch/
+scripts/
+*generate_history*
+*organic_git_history*
