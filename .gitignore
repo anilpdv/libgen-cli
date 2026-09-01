@@ -1,0 +1,16 @@
+# Binaries & Packaging
+/libgen-cli
+/bin/
+/dist/
+/libgen/test
+/libgen/libgen
+/libgen/libgen.test
+/libgen/mem.prof
+*.exe
+
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+*.log
+scratch/
