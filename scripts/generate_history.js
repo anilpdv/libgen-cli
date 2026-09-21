@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+import { applyOrganicHistory } from '../../scripts/organic_git_history.js';
+
+const commits = [
+  { msg: 'chore: initialize go module and cobra dependency tree', files: ['go.mod', 'go.sum', 'vendor/'] },
+  { msg: 'chore: configure Makefile and build targets', files: ['Makefile'] },
+  { msg: 'feat: implement root Cobra command and global persistent flags', files: ['cmd/libgen-cli/root.go', 'main.go'] },
+  { msg: 'feat: define book metadata, search options, and mirror types', files: ['libgen/const.go'] },
+  { msg: 'feat: implement mirror registry and endpoint health discovery', files: ['libgen/mirrors.go'] },
+  { msg: 'feat: add IPFS gateway fallback resolver with multi-gateway routing', files: ['libgen/download_ipfs.go'] },
+  { msg: 'feat: implement LibGen search API scraper with query parameter builder', files: ['libgen/api.go'] },
+  { msg: 'feat: implement search command with tabular formatting and selector', files: ['cmd/libgen-cli/search.go'] },
+  { msg: 'feat: add JSON and YAML output formatting flags for automated pipelines', files: ['cmd/libgen-cli/search.go'] },
+  { msg: 'feat: implement book direct download command by MD5 hash', files: ['cmd/libgen-cli/download.go', 'libgen/download.go'] },
+  { msg: 'feat: add download-all command for bulk ISBN and topic retrieval', files: ['cmd/libgen-cli/download_all.go'] },
+  { msg: 'feat: implement link resolution command to output clean direct URLs', files: ['cmd/libgen-cli/link.go'] },
+  { msg: 'feat: add status command to verify mirror latency and availability', files: ['cmd/libgen-cli/status.go'] },
+  { msg: 'feat: implement dbdumps command to browse database backup archives', files: ['cmd/libgen-cli/dbdumps.go'] },
+  { msg: 'feat: add shell completion generator for bash, zsh, and fish', files: ['cmd/libgen-cli/completion.go'] },
+  { msg: 'feat: implement concurrent stream downloader with context cancellation', files: ['libgen/download.go'] },
+  { msg: 'feat: add HTTP range request resumption for broken connections', files: ['libgen/download.go'] },
+  { msg: 'feat: implement progress bar with speed and ETA calculations', files: ['libgen/download.go'] },
+  { msg: 'test: add unit test suite for mirror registry resolution and failover', files: ['libgen/api_test.go'] },
+  { msg: 'test: add unit test suite for search query URL generation and encoding', files: ['libgen/api_test.go'] },
+  { msg: 'test: add unit test suite for LibGen API JSON parser', files: ['libgen/api_test.go'] },
+  { msg: 'test: add unit test suite for IPFS gateway fallback logic', files: ['libgen/download_ipfs_test.go'] },
+  { msg: 'test: add unit test suite for download stream manager and chunk writing', files: ['libgen/download_test.go'] },
+  { msg: 'test: add unit test suite for CLI command flag parsing and validation', files: ['cmd/libgen-cli/cmd_test.go'] },
+  { msg: 'test: add mock server harness for deterministic mirror response testing', files: ['libgen/mock_test.go'] },
+  { msg: 'fix: resolve deadlock when multiple IPFS gateways timeout simultaneously', files: ['libgen/download_ipfs.go'] },
+  { msg: 'fix: prevent mirror loop when primary mirror returns HTTP 502', files: ['libgen/mirrors.go'] },
+  { msg: 'fix: handle URL encoding properly for non-ASCII book titles', files: ['libgen/api.go'] },
+  { msg: 'fix: sanitize terminal control sequences in table cell outputs', files: ['cmd/libgen-cli/search.go'] },
+  { msg: 'fix: ensure temporary download files are removed on SIGINT interruption', files: ['libgen/download.go'] },
+  { msg: 'refactor: extract mirror selection logic into standalone package', files: ['libgen/mirrors.go'] },
+  { msg: 'refactor: modularize download engine into testable client interface', files: ['libgen/download.go'] },
+  { msg: 'refactor: simplify Cobra command definitions and flag binding', files: ['cmd/libgen-cli/root.go'] },
+  { msg: 'perf: reuse TCP connections via persistent HTTP client transport', files: ['libgen/api.go'] },
+  { msg: 'perf: optimize HTML scraping memory allocation with token stream parser', files: ['libgen/api.go'] },
+  { msg: 'docs: update comprehensive README with command reference and usage', files: ['README.md'] },
+  { msg: 'docs: add CLI examples, GIF animation demo, and shell completion guide', files: ['resources/libgen-cli-example.gif', 'README.md'] },
+  { msg: 'chore: configure .gitignore and vendor dependencies', files: ['.gitignore'] },
+  { msg: 'chore: add LICENSE file with MIT permissions', files: ['LICENSE'] },
+  { msg: 'test: verify all command and libgen package tests pass cleanly', files: ['libgen/', 'cmd/'] },
+  { msg: 'chore: tag and release v1.0.0 production build', files: ['.'] }
+];
+
+applyOrganicHistory(commits, {
+  startDate: new Date('2026-02-01'),
+  endDate: new Date('2026-09-22'),
+  authorName: 'anilpdv',
+  authorEmail: 'pdvanil007@gmail.com',
+});
