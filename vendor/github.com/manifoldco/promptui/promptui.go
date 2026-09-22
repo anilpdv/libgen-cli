@@ -1,91 +1,27 @@
+// Package promptui is a library providing a simple interface to create command-line prompts for go.
+// It can be easily integrated into spf13/cobra, urfave/cli or any cli go application.
+//
+// promptui has two main input modes:
+//
+// Prompt provides a single line for user input. It supports optional live validation,
+// confirmation and masking the input.
+//
+// Select provides a list of options to choose from. It supports pagination, search,
+// detailed view and custom templates.
 package promptui
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strconv"
-	"strings"
-)
+import "errors"
 
-type SelectTemplates struct {
-	Active   string
-	Inactive string
-	Selected string
-}
+// ErrEOF is the error returned from prompts when EOF is encountered.
+var ErrEOF = errors.New("^D")
 
-type Key struct {
-	Code    rune
-	Display string
-}
+// ErrInterrupt is the error returned from prompts when an interrupt (ctrl-c) is
+// encountered.
+var ErrInterrupt = errors.New("^C")
 
-type SelectKeys struct {
-	Next     Key
-	Prev     Key
-	PageUp   Key
-	PageDown Key
-}
+// ErrAbort is the error returned when confirm prompts are supplied "n"
+var ErrAbort = errors.New("")
 
-type Select struct {
-	Label     string
-	Items     interface{}
-	Templates *SelectTemplates
-	Size      int
-	IsVimMode bool
-	Keys      *SelectKeys
-}
-
-func (s *Select) Run() (int, string, error) {
-	var items []string
-	switch v := s.Items.(type) {
-	case []string:
-		items = v
-	default:
-		return 0, "", fmt.Errorf("unsupported items type")
-	}
-
-	if len(items) == 0 {
-		return 0, "", fmt.Errorf("no items to select")
-	}
-
-	fmt.Printf("\n%s (Total: %d):\n", s.Label, len(items))
-	for i, item := range items {
-		fmt.Printf("  [%d] %s\n", i+1, item)
-	}
-
-	fmt.Printf("\nEnter choice [1-%d] (default 1, 'n' next page, 'p' prev page, 'q' to quit): ", len(items))
-
-	scanner := bufio.NewScanner(os.Stdin)
-	if scanner.Scan() {
-		text := strings.TrimSpace(scanner.Text())
-		if text == "" {
-			return 0, items[0], nil
-		}
-		if text == "q" || text == "quit" || text == "exit" {
-			return 0, "", fmt.Errorf("selection cancelled by user")
-		}
-		if strings.EqualFold(text, "n") || strings.EqualFold(text, "next") {
-			for idx, item := range items {
-				if strings.Contains(item, "Next Page") {
-					return idx, item, nil
-				}
-			}
-		}
-		if strings.EqualFold(text, "p") || strings.EqualFold(text, "prev") || strings.EqualFold(text, "previous") {
-			for idx, item := range items {
-				if strings.Contains(item, "Previous Page") {
-					return idx, item, nil
-				}
-			}
-		}
-		num, err := strconv.Atoi(text)
-		if err == nil && num >= 1 && num <= len(items) {
-			return num - 1, items[num-1], nil
-		}
-		fmt.Println("Invalid selection, defaulting to option 1.")
-		return 0, items[0], nil
-	}
-
-	// Non-interactive or EOF: default to 1st item
-	return 0, items[0], nil
-}
+// ValidateFunc is a placeholder type for any validation functions that validates a given input. It should return
+// a ValidationError if the input is not valid.
+type ValidateFunc func(string) error
